@@ -41,7 +41,7 @@ jobs:
           printf 'Cobertura de linhas e branches da aplicação medida em conjunto para pytest e BDD. Os 11 cenários funcionais existentes estão representados pelos 11 cenários Gherkin.\n\n' >> reports/coverage-report.md
           python -m coverage report --format=markdown >> reports/coverage-report.md
           python -m coverage html --directory coverage_html
-          python -m coverage xml --output coverage.xml
+          python -m coverage xml -o coverage.xml
 
       - name: Test container with Testcontainers
         env:
