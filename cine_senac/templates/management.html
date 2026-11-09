@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Gestão — CineSenac{% endblock %}
+{% block content %}
+  <h1>Área de gestão</h1>
+  <p>Olá, {{ account.username }}. Selecione uma operação.</p>
+  <div class="action-list">
+    <a class="button" href="{{ url_for('new_room') }}">Cadastrar sala</a>
+    <a class="button" href="{{ url_for('new_film') }}">Cadastrar filme</a>
+    <a class="button" href="{{ url_for('new_screening') }}">Cadastrar sessão</a>
+    <a class="button" href="{{ url_for('schedule') }}">Consultar programação</a>
+    <a class="button secondary" href="{{ url_for('list_records', kind='salas') }}">Consultar salas</a>
+    <a class="button secondary" href="{{ url_for('list_records', kind='filmes') }}">Consultar filmes</a>
+    <a class="button secondary" href="{{ url_for('list_records', kind='sessoes') }}">Consultar sessões</a>
+    {% if account.role == 'admin' %}
+      <a class="button secondary" href="{{ url_for('list_records', kind='clientes') }}">Consultar clientes</a>
+    {% endif %}
+  </div>
+{% endblock %}

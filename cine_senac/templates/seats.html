@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Escolher assentos — CineSenac{% endblock %}
+{% block content %}
+  <h1>Escolha seus assentos</h1>
+  <p>{{ screening.film_title }} · {{ screening.starts_at|replace('T', ' ') }} · {{ screening.room_name }}</p>
+  {% if seats %}
+    <form method="post" action="{{ url_for('review_booking', screening_id=screening.id) }}" class="form-card">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <fieldset>
+        <legend>Assentos disponíveis</legend>
+        <div class="seat-grid">
+          {% for seat in seats %}
+            <label class="seat-option">
+              <input type="checkbox" name="assento_ids" value="{{ seat.id }}">
+              <span>Assento {{ seat.label }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <button type="submit">Revisar reserva</button>
+    </form>
+  {% else %}
+    <p>Não há assentos disponíveis para esta sessão.</p>
+  {% endif %}
+{% endblock %}

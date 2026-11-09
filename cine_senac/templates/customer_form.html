@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Cadastro de cliente — CineSenac{% endblock %}
+{% block content %}
+  <h1>Cadastro de cliente</h1>
+  <p>Informe seus dados para escolher assentos e reservar sessões.</p>
+  <form method="post" class="form-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="nome">Nome</label>
+    <input id="nome" name="nome" value="{{ request.form.get('nome', '') }}" autocomplete="name" required>
+    <label for="idade">Idade</label>
+    <input id="idade" name="idade" type="number" min="0" max="130" value="{{ request.form.get('idade', '') }}" required>
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" value="{{ request.form.get('email', '') }}" autocomplete="email" required>
+    <label for="logradouro">Logradouro</label>
+    <input id="logradouro" name="logradouro" value="{{ request.form.get('logradouro', '') }}" autocomplete="address-line1" required>
+    <label for="numero">Número</label>
+    <input id="numero" name="numero" value="{{ request.form.get('numero', '') }}" required>
+    <label for="complemento">Complemento</label>
+    <input id="complemento" name="complemento" value="{{ request.form.get('complemento', '') }}" autocomplete="address-line2">
+    <label for="bairro">Bairro</label>
+    <input id="bairro" name="bairro" value="{{ request.form.get('bairro', '') }}" required>
+    <label for="cidade">Cidade</label>
+    <input id="cidade" name="cidade" value="{{ request.form.get('cidade', '') }}" autocomplete="address-level2" required>
+    <label for="estado">Estado</label>
+    <input id="estado" name="estado" value="{{ request.form.get('estado', '') }}" autocomplete="address-level1" required>
+    <label for="cep">CEP</label>
+    <input id="cep" name="cep" value="{{ request.form.get('cep', '') }}" autocomplete="postal-code" required>
+    <button type="submit">Salvar cadastro</button>
+  </form>
+{% endblock %}

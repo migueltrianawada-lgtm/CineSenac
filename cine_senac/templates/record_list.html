@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{ kind|capitalize }} — CineSenac{% endblock %}
+{% block content %}
+  <h1>Consultar {{ kind }}</h1>
+  {% if records %}
+    <div class="table-wrap">
+      <table>
+        <thead><tr>{% for header in headers %}<th scope="col">{{ header }}</th>{% endfor %}</tr></thead>
+        <tbody>
+          {% for record in records %}
+            <tr>{% for value in record %}<td>{{ value }}</td>{% endfor %}</tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>Nenhum registro encontrado.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Cadastrar sala — CineSenac{% endblock %}
+{% block content %}
+  <h1>Cadastrar sala</h1>
+  <form method="post" class="form-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="nome">Nome da sala</label>
+    <input id="nome" name="nome" value="{{ request.form.get('nome', '') }}" required>
+    <label for="quantidade_assentos">Quantidade de assentos</label>
+    <input id="quantidade_assentos" name="quantidade_assentos" type="number" min="1" value="{{ request.form.get('quantidade_assentos', '') }}" required>
+    <label for="horario_abertura">Horário de abertura</label>
+    <input id="horario_abertura" name="horario_abertura" type="time" value="{{ request.form.get('horario_abertura', '') }}" required>
+    <label for="horario_fechamento">Horário de fechamento</label>
+    <input id="horario_fechamento" name="horario_fechamento" type="time" value="{{ request.form.get('horario_fechamento', '') }}" required>
+    <label for="especificacao_tecnica">Especificação técnica</label>
+    <textarea id="especificacao_tecnica" name="especificacao_tecnica" required>{{ request.form.get('especificacao_tecnica', '') }}</textarea>
+    <button type="submit">Salvar sala</button>
+  </form>
+{% endblock %}

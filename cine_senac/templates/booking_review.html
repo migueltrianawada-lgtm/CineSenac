@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Revisar reserva — CineSenac{% endblock %}
+{% block content %}
+  <h1>Revise sua reserva</h1>
+  <section class="summary-card">
+    <h2>{{ screening.film_title }}</h2>
+    <p>Sessão: {{ screening.starts_at|replace('T', ' ') }} · {{ screening.room_name }}</p>
+    <p>Assentos: {{ seats|map(attribute='label')|join(', ') }}</p>
+    <p>Cliente: {{ customer.name }} · {{ customer.email }}</p>
+    <p>Total: R$ {{ "%.2f"|format((screening.ticket_price_cents * seats|length) / 100) }}</p>
+  </section>
+  <form method="post" action="{{ url_for('confirm_booking') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit">Confirmar reserva</button>
+    <a class="button secondary" href="{{ url_for('seat_selection', screening_id=screening.id) }}">Alterar assentos</a>
+  </form>
+{% endblock %}

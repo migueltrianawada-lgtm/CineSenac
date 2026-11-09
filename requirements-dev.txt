@@ -1,0 +1,5 @@
+-r requirements.txt
+pytest>=8.3,<9
+behave>=1.2.6,<2
+coverage>=7.6,<8
+testcontainers>=4,<5

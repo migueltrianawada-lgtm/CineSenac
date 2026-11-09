@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Filmes e sessões — CineSenac{% endblock %}
+{% block content %}
+  <h1>Filmes e sessões</h1>
+  {% if films %}
+    <div class="card-grid">
+      {% for film in films %}
+        <article class="card">
+          {% if film.poster_url %}
+            <img class="poster" src="{{ film.poster_url }}" alt="Cartaz do filme {{ film.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h2>{{ film.title }}</h2>
+            <p>{{ film.genre }} · {{ film.duration_minutes }} min · {{ film.rating }}</p>
+            <p>{{ film.synopsis }}</p>
+            {% if film.is_national %}<p class="tag">Filme nacional</p>{% endif %}
+            {% if film.screening_id %}
+              <p>{{ film.starts_at|replace('T', ' ') }} · {{ film.room_name }}</p>
+              <p>Ingresso: R$ {{ "%.2f"|format(film.ticket_price_cents / 100) }}</p>
+              <a class="button" href="{{ url_for('seat_selection', screening_id=film.screening_id) }}">Escolher assentos</a>
+            {% else %}
+              <p>Não há sessões futuras cadastradas.</p>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>A programação ainda não possui filmes cadastrados.</p>
+  {% endif %}
+{% endblock %}
