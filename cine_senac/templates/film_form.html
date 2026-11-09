@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Cadastrar filme — CineSenac{% endblock %}
+{% block content %}
+  <h1>Cadastrar filme</h1>
+  <form method="post" class="form-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="titulo">Título</label>
+    <input id="titulo" name="titulo" value="{{ request.form.get('titulo', '') }}" required>
+    <label for="duracao_minutos">Duração (minutos)</label>
+    <input id="duracao_minutos" name="duracao_minutos" type="number" min="1" value="{{ request.form.get('duracao_minutos', '') }}" required>
+    <label for="genero">Gênero</label>
+    <input id="genero" name="genero" value="{{ request.form.get('genero', '') }}" required>
+    <label for="sinopse">Sinopse</label>
+    <textarea id="sinopse" name="sinopse" required>{{ request.form.get('sinopse', '') }}</textarea>
+    <label for="cartaz_url">URL do cartaz</label>
+    <input id="cartaz_url" name="cartaz_url" type="url" value="{{ request.form.get('cartaz_url', '') }}" required>
+    <label for="faixa_etaria">Faixa etária</label>
+    <input id="faixa_etaria" name="faixa_etaria" value="{{ request.form.get('faixa_etaria', '') }}" required>
+    <label for="elenco">Elenco</label>
+    <textarea id="elenco" name="elenco" required>{{ request.form.get('elenco', '') }}</textarea>
+    <label class="checkbox-label">
+      <input name="nacional" type="checkbox" {% if request.form.get('nacional') %}checked{% endif %}>
+      Produção nacional
+    </label>
+    <button type="submit">Salvar filme</button>
+  </form>
+{% endblock %}

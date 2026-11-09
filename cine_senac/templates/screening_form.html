@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Cadastrar sessão — CineSenac{% endblock %}
+{% block content %}
+  <h1>Cadastrar sessão</h1>
+  <form method="post" class="form-card">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="filme_id">Filme</label>
+    <select id="filme_id" name="filme_id" required>
+      <option value="">Selecione</option>
+      {% for film in films %}<option value="{{ film.id }}" {% if request.form.get('filme_id') == film.id|string %}selected{% endif %}>{{ film.title }}</option>{% endfor %}
+    </select>
+    <label for="sala_id">Sala</label>
+    <select id="sala_id" name="sala_id" required>
+      <option value="">Selecione</option>
+      {% for room in rooms %}<option value="{{ room.id }}" {% if request.form.get('sala_id') == room.id|string %}selected{% endif %}>{{ room.name }}</option>{% endfor %}
+    </select>
+    <label for="inicio">Início</label>
+    <input id="inicio" name="inicio" type="datetime-local" value="{{ request.form.get('inicio', '') }}" required>
+    <label for="duracao_minutos">Duração (minutos)</label>
+    <input id="duracao_minutos" name="duracao_minutos" type="number" min="1" value="{{ request.form.get('duracao_minutos', '') }}" required>
+    <label for="valor_ingresso">Valor do ingresso (R$)</label>
+    <input id="valor_ingresso" name="valor_ingresso" type="number" min="0" step="0.01" value="{{ request.form.get('valor_ingresso', '') }}" required>
+    <button type="submit">Salvar sessão</button>
+  </form>
+{% endblock %}

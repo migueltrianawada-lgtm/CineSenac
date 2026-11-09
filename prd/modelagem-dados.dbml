@@ -1,0 +1,96 @@
+Project CineSenac {
+  database_type: 'PostgreSQL'
+  Note: 'Modelo conceitual PostgreSQL. Regras adicionais: deve haver uma sessão de filme nacional por dia; clientes não podem comprar ingressos para sessões com horários conflitantes; a duração da sessão deve ser compatível com a duração do filme e com o funcionamento da sala; quantidade_assentos deve corresponder aos assentos cadastrados na sala. O protótipo local usa SQLite.'
+}
+
+Table filmes {
+  id int [pk, increment]
+  titulo varchar(200) [not null]
+  duracao_minutos int [not null]
+  genero varchar(100) [not null]
+  sinopse text [not null]
+  cartaz_url varchar(2048)
+  faixa_etaria varchar(20) [not null]
+  elenco text
+  nacional boolean [not null, default: false]
+}
+
+Table salas {
+  id int [pk, increment]
+  quantidade_assentos int [not null]
+  horario_abertura time [not null]
+  horario_fechamento time [not null]
+  especificacao_tecnica text
+}
+
+Table sessoes {
+  id int [pk, increment]
+  filme_id int [not null]
+  sala_id int [not null]
+  inicio timestamp [not null]
+  duracao_minutos int [not null]
+  valor_ingresso decimal(10, 2) [not null]
+
+  indexes {
+    (id, sala_id) [unique]
+  }
+}
+
+Table clientes {
+  id int [pk, increment]
+  nome varchar(200) [not null]
+  idade int [not null]
+  email varchar(254) [not null, unique]
+  logradouro varchar(200) [not null]
+  numero varchar(20) [not null]
+  complemento varchar(100)
+  bairro varchar(100) [not null]
+  cidade varchar(100) [not null]
+  estado varchar(100) [not null]
+  cep varchar(20) [not null]
+}
+
+Table assentos {
+  id int [pk, increment]
+  sala_id int [not null]
+  identificacao varchar(20) [not null]
+
+  indexes {
+    (sala_id, identificacao) [unique]
+    (id, sala_id) [unique]
+  }
+}
+
+Table lotes_reserva {
+  id int [pk, increment]
+  chave_idempotencia varchar(100) [not null, unique]
+  hash_solicitacao varchar(64) [not null]
+  cliente_id int [not null]
+  sessao_id int [not null]
+  criada_em timestamp [not null]
+}
+
+Table reservas {
+  id int [pk, increment]
+  lote_id int [not null]
+  cliente_id int [not null]
+  sessao_id int [not null]
+  sala_id int [not null]
+  assento_id int [not null]
+  valor_pago decimal(10, 2) [not null]
+  criada_em timestamp [not null]
+
+  indexes {
+    (sessao_id, assento_id) [unique]
+  }
+}
+
+Ref: sessoes.filme_id > filmes.id
+Ref: sessoes.sala_id > salas.id
+Ref: assentos.sala_id > salas.id
+Ref: lotes_reserva.cliente_id > clientes.id
+Ref: lotes_reserva.sessao_id > sessoes.id
+Ref: reservas.lote_id > lotes_reserva.id
+Ref: reservas.(sessao_id, sala_id) > sessoes.(id, sala_id)
+Ref: reservas.(assento_id, sala_id) > assentos.(id, sala_id)
+Ref: reservas.cliente_id > clientes.id

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Programação — CineSenac{% endblock %}
+{% block content %}
+  <h1>Programação diária</h1>
+  <form method="get" class="form-card compact-form">
+    <label for="dia">Dia</label>
+    <input id="dia" name="dia" type="date" value="{{ day }}" required>
+    <button type="submit">Consultar</button>
+  </form>
+  {% if day %}
+    <h2>{{ day }}</h2>
+    {% if screenings %}
+      <ul class="item-list">
+        {% for screening in screenings %}
+          <li>{{ screening.starts_at|replace('T', ' ') }} — {{ screening.film_title }} — {{ screening.room_name }}{% if screening.is_national %} (nacional){% endif %}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>Não há sessões cadastradas para este dia.</p>
+    {% endif %}
+    <p class="{{ 'success-text' if has_national else 'warning-text' }}">
+      {{ 'Há sessão de filme nacional neste dia.' if has_national else 'Não há sessão de filme nacional neste dia.' }}
+    </p>
+  {% endif %}
+{% endblock %}

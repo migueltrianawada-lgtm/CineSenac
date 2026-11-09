@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Reserva confirmada — CineSenac{% endblock %}
+{% block content %}
+  <h1>Reserva confirmada</h1>
+  <section class="summary-card">
+    <p>Cliente: {{ batch.customer_name }}</p>
+    <p>Filme: {{ batch.title }}</p>
+    <p>Sessão: {{ batch.starts_at|replace('T', ' ') }} · {{ batch.room_name }}</p>
+    <p>{{ reservations|length }} assento(s): {{ reservations|map(attribute='label')|join(', ') }}</p>
+    <p>Total: R$ {{ "%.2f"|format((reservations|sum(attribute='price_cents')) / 100) }}</p>
+    <p>Reserva nº {{ batch.id }}</p>
+  </section>
+  <a class="button" href="{{ url_for('home') }}">Voltar aos filmes</a>
+{% endblock %}
